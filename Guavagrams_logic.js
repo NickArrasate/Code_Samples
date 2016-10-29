@@ -5,13 +5,15 @@ exports.NannerLogic = function() {
   this.wordArray1 = [];
   this.ryansArray = [];
   this.petersArray = [];
-  this.nullSwitch = false;
+  this.nullSwitch = false; //these 'switch' vars are used to mark the end of completed words
   this.nullSwitch1 = false;
 };
 
+//This prototype sets any text contents of the horizontal rows into an array.
+
 exports.NannerLogic.prototype.checkArrayRows = function () {
-  this.ryansArray = [];
-  for(var i = 0; i < this.masterRowArray.length; i++){
+  this.ryansArray = []; //set an empty array to hold all complete words
+  for(var i = 0; i < this.masterRowArray.length; i++){ //loop through all tiles horizontally.
     if(this.masterRowArray[i] !== '' && this.nullSwitch === true){
       this.wordArray.push(this.masterRowArray[i]);
       this.nullSwitch = false;
@@ -30,6 +32,7 @@ exports.NannerLogic.prototype.checkArrayRows = function () {
   return this.ryansArray;
 };
 
+//Same as above but for the vertical columns
 exports.NannerLogic.prototype.columnsToRows = function () {
   this.petersArray = [];
   for(var ii = 0; ii < this.masterColArray.length; ii++){

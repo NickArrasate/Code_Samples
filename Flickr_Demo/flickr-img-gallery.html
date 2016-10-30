@@ -1,0 +1,37 @@
+---
+---
+<script>
+var key = '{{ site.flickr.api_key }}';
+var gallery_id = '{{ site.flickr.gallery_id }}';
+var per_page = '{{ site.flickr.per_page }}';
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api.flickr.com/services/rest/?method=flickr.galleries.getPhotos&api_key=" + key + "&gallery_id=" + gallery_id + "&format=json&nojsoncallback=1",
+  "method": "GET",
+  "headers": {}
+}
+
+$.ajax(settings).done(function (data) {
+  console.log(data);
+
+  $.each( data.photos.photo, function( i, gp ) {
+    var owner = gp.owner;
+    var farmId = gp.farm;
+    var serverId = gp.server;
+    var id = gp.id;
+    var secret = gp.secret;
+
+    console.log('owner:' + owner + farmId + ", " + serverId + ", " + id + ", " + secret);
+
+    //  https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+
+    $("#flickr-gallery-display").append('<a href="https://www.flickr.com/photos/' + owner + '/' + id + '">' + '<img class="flickr-gallery-img col-sm-4" src="https://farm' + farmId + '.staticflickr.com/' + serverId + '/' + id + '_' + secret + '.jpg"/>' + '</a>');
+  });
+});
+
+</script>
+<h2>This is a Flickr Gallery!</h2>
+<div id="flickr-gallery-display" class='row'>
+
+</div>

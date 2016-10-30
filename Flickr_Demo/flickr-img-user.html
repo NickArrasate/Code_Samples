@@ -1,0 +1,35 @@
+---
+---
+<script>
+//Script for searching by user and bringing their recent public images to gallery
+var key = '{{ site.flickr.api_key }}';
+var user_id = '{{ site.flickr.user_id }}';
+var per_page = '{{ site.flickr.per_page }}';
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=" + key + "&user_id=" + user_id + "&per_page=" + per_page + "&page=1&format=json&nojsoncallback=1",
+  "method": "GET",
+  "headers": {}
+}
+console.log(per_page);
+$.ajax(settings).done(function (data) {
+  console.log(data);
+  $.each( data.photos.photo, function( i, gp ) {
+
+    var owner = gp.owner;
+    var farmId = gp.farm;
+    var serverId = gp.server;
+    var id = gp.id;
+    var secret = gp.secret;
+    //  https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+    $("#flickr-user-display").append('<a href="https://www.flickr.com/photos/' + owner + '/' + id + '">' + '<img class="flickr-user-img col-sm-4" src="https://farm' + farmId + '.staticflickr.com/' + serverId + '/' + id + '_' + secret + '.jpg"/></a>');
+  });
+});
+</script>
+
+<h2>These are public images from a flickr user!</h2>
+
+<div id="flickr-user-display" class='row'>
+
+</div>

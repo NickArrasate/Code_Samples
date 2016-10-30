@@ -11,6 +11,11 @@ The client has locations in multiple parts of the state so I added buttons to na
 
 The map can be viewed at https://neverwinternw.com/, a site I built myself.
 
+## Bowtie Integration Demonstrations
+
+While completing an internship for Bowtie.io, I worked on creating easy to use service integrations for their CMS. I wrote working code for the site then set up a micro site with instructions on how a non-programmer user could add features to their site.
+
+One such integration is for including Flickr galleries on a site. You can view the code inside the 'Flickr_Demo' folder and see the instructional page at https://flickr-demo.bowtied.io/.
 
 ##Guavagrams (interface and logic)
 

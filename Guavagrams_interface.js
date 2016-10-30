@@ -1,11 +1,15 @@
-var moment = require("./../bower_components/moment/moment.js");
-var $counter = 0;
-var scoreCounter = 0;
+
+//Global vars
+var moment = require("./../bower_components/moment/moment.js"); //require moment for the timer
 var currentTime = moment().minute(20).second($counter--).format('mm : ss');
 var scoreTime = moment().minute(0).second(scoreCounter++).format('mm : ss');
+var $counter = 0;
+var scoreCounter = 0;
 var updateInterval;
-var NannerLogic = require("./../js/nannerlogic.js").NannerLogic;
-var nannerLogic = new NannerLogic();
+
+var boardLogic = require("./../js/boardLogic.js").boardLogic; //require the business logic
+var boardLogic = new boardLogic();
+
 var clickedTile = null;
 var dumpCounter = 0;
 var testArrayRows = [];
@@ -14,24 +18,27 @@ var testArrayAll = [];
 var newLetter;
 
 $(document).ready(function(){
-  //Game Start
+  //Game Start----Display the board, hand and timer
   $('#run').click(function(){
     $('.intro-screen').hide();
     $('.gameBoard').slideDown();
     $('.handDisplay').slideDown();
     $('#run').hide();
-    var newHand = nannerLogic.dealHand();
+    var newHand = boardLogic.dealHand();
     for(var j = 0; j < 31; j++){
       $('#handLetter'+j).html(newHand[j]);
     }
 
-    //Drag and Drop
+    //setup params for 'drag and drop'
+
+    //Tile params
     $('.gameTile').draggable({
       snap: '.boardTile',
       snapMode: 'inner',
       revert: 'invalid'
     });
 
+    //board space params
     $('.boardTile').droppable({
       scroll: true,
       accept: ".gameTile",
@@ -47,7 +54,8 @@ $(document).ready(function(){
         $(this).droppable('option', 'accept', '.gameTile');
       }
     });
-//Dump area logic
+
+    //Dump area logic
     $('.dump').droppable({
       accept: ".gameTile",
       tolerance: "intersect",
@@ -55,7 +63,7 @@ $(document).ready(function(){
         if (dumpCounter < 2) {
           $(ui.draggable).addClass('invisible');
           dumpCounter++;
-          newLetter = nannerLogic.letterGenerator();
+          newLetter = boardLogic.letterGenerator();
           $('#handRow4').append("<span id='newTile" + dumpCounter + "' class='gameTile col-xs-1'>" + newLetter + "</span>");
           $('.gameTile').draggable({
             snap: '.boardTile',
@@ -64,7 +72,7 @@ $(document).ready(function(){
           });
         } else if (dumpCounter === 2){
           $(ui.draggable).addClass('invisible');
-          newLetter = nannerLogic.letterGenerator();
+          newLetter = boardLogic.letterGenerator();
           $('#handRow4').append("<span id='newTile" + dumpCounter + "' class='gameTile col-xs-1'>" + newLetter + "</span>");
           $('.gameTile').draggable({
             snap: '.boardTile',
@@ -114,20 +122,23 @@ $(document).ready(function(){
     testArrayRows = [];
     testArrayCols = [];
     var notWordArray = [];
+
+    //passing all rows into the business logic array to be tested and filtered for spaces
     for (var xx=1; xx<=400; xx++){
-      nannerLogic.masterRowArray.push($('#' + xx).text());
+      boardLogic.masterRowArray.push($('#' + xx).text());
     }
 
+    //passing all columns into the business logic array to be tested and filtered for spaces
     for (var yy=1; yy<=20; yy++){
       for (var zz=1; zz<=20; zz++){
-        nannerLogic.masterColArray.push($('.row'+ zz + ' .col' + yy).text());
+        boardLogic.masterColArray.push($('.row'+ zz + ' .col' + yy).text());
       }
     }
-    var lettersConnected = nannerLogic.lettersConnected();
-    testArrayRows = nannerLogic.checkArrayRows();
-    testArrayCols = nannerLogic.columnsToRows();
-    var lettersUsed = nannerLogic.checkLetters(testArrayCols);
-    testArrayAll = testArrayRows.concat(testArrayCols);
+    var lettersConnected = boardLogic.lettersConnected();
+    var testArrayRows = boardLogic.checkArrayRows();
+    var testArrayCols = boardLogic.columnsToRows();
+    var lettersUsed = boardLogic.checkLetters(testArrayCols);
+    var testArrayAll = testArrayRows.concat(testArrayCols);
     var enteredWord = '';
 
 //test to see that letters are connected and all letters are used

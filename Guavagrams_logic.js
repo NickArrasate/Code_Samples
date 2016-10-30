@@ -1,17 +1,17 @@
-exports.NannerLogic = function() {
+exports.boardLogic = function() {
   this.masterRowArray = [];
   this.masterColArray = [];
   this.wordArray = [];
   this.wordArray1 = [];
   this.ryansArray = [];
-  this.petersArray = [];
+  this.nicksArray = [];
   this.nullSwitch = false; //these 'switch' vars are used to mark the end of completed words
   this.nullSwitch1 = false;
 };
 
 //This prototype sets any text contents of the horizontal rows into an array.
 
-exports.NannerLogic.prototype.checkArrayRows = function () {
+exports.boardLogic.prototype.checkArrayRows = function () {
   this.ryansArray = []; //set an empty array to hold all complete words
   for(var i = 0; i < this.masterRowArray.length; i++){ //loop through all tiles horizontally.
     if(this.masterRowArray[i] !== '' && this.nullSwitch === true){
@@ -33,8 +33,8 @@ exports.NannerLogic.prototype.checkArrayRows = function () {
 };
 
 //Same as above but for the vertical columns
-exports.NannerLogic.prototype.columnsToRows = function () {
-  this.petersArray = [];
+exports.boardLogic.prototype.columnsToRows = function () {
+  this.nicksArray = [];
   for(var ii = 0; ii < this.masterColArray.length; ii++){
     if(this.masterColArray[ii] !== '' && this.nullSwitch1 === true){
       this.wordArray1.push(this.masterColArray[ii]);
@@ -45,17 +45,17 @@ exports.NannerLogic.prototype.columnsToRows = function () {
       if(this.wordArray1.length === 0){
         this.nullSwitch1 = true;
       } else {
-        this.petersArray.push(this.wordArray1.join(''));
+        this.nicksArray.push(this.wordArray1.join(''));
         this.wordArray1 = [];
       }
     }
   }
   this.masterColArray = [];
-  return this.petersArray;
+  return this.nicksArray;
 };
 
 // function for generating the player's hand
-exports.NannerLogic.prototype.dealHand = function(){
+exports.boardLogic.prototype.dealHand = function(){
   var handArray = [];
   var handNumber = 30;
   var letterChoice = "";
@@ -69,7 +69,7 @@ exports.NannerLogic.prototype.dealHand = function(){
 
 
 // Checks that all the letters were used
-exports.NannerLogic.prototype.checkLetters = function(testArrayCols) {
+exports.boardLogic.prototype.checkLetters = function(testArrayCols) {
   var word = "";
   var letters;
   var lettersList = [];
@@ -88,7 +88,7 @@ exports.NannerLogic.prototype.checkLetters = function(testArrayCols) {
 };
 
 // Checks if letters are connected
-exports.NannerLogic.prototype.lettersConnected = function() {
+exports.boardLogic.prototype.lettersConnected = function() {
   for (var i = 0; i < this.masterRowArray.length; i ++) {
     if (this.masterRowArray[i] === "") {
       console.log("empty");
@@ -102,12 +102,12 @@ exports.NannerLogic.prototype.lettersConnected = function() {
 };
 
 // RNG function
-exports.NannerLogic.prototype.RNG = function(max) {
+exports.boardLogic.prototype.RNG = function(max) {
   return Math.floor((Math.random() * max) + 1);
 };
 
 //RNG for generating hand
-exports.NannerLogic.prototype.letterGenerator = function() {
+exports.boardLogic.prototype.letterGenerator = function() {
 
   var roll = this.RNG(110);
   var roll2 = 0;
